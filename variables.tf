@@ -1,3 +1,5 @@
+# Proxmox variables
+
 variable "virtual_environment_endpoint" {
   type        = string
   sensitive   = true
@@ -30,14 +32,12 @@ variable "talos_linux_iso_image_filename" {
 
 variable "proxmox_target_node" {
   type        = string
-  description = "Filename of Talos linux image saved in Proxmox"
+  description = "PVE node"
 }
 
-# VMs configuration
-
-variable "vm_timezone" {
+variable "cluster_name" {
   type        = string
-  description = "The VM gateway"
+  description = "Name of the k8s cluster"
 }
 
 variable "vm_gateway" {
@@ -45,12 +45,17 @@ variable "vm_gateway" {
   description = "The VM gateway"
 }
 
-# TBD
-
-variable "controller_node_config" {
-  type = list(ip_address = string)
-}
-
-variable "worker_node_config" {
-  type = list(ip_address = string)
+variable "node_data" {
+  type = object({
+    controlplanes = map(object({
+      install_disk  = string
+      install_image = string
+      hostname      = optional(string)
+    }))
+    workers = map(object({
+      install_disk  = string
+      install_image = string
+      hostname      = optional(string)
+    }))
+  })
 }

@@ -1,12 +1,12 @@
 resource "proxmox_virtual_environment_vm" "ctrl_plane" {
-  for_each = { for node in var.controller_node_config : node.name => node }
+  for_each = var.node_data.controlplanes
 
-  name      = each.value.name
-  node_name = "pve"
+  name      = format("%s-kubernetes-control-plane-%s", var.cluster_name, index(keys(var.node_data.controlplanes), each.key))
+  node_name = var.proxmox_target_node
 
   machine     = "q35"
   bios        = "ovmf"
-  description = "Kubernetes server"
+  description = "Talos ctrl plane node"
 
   agent {
     enabled = true
@@ -28,7 +28,7 @@ resource "proxmox_virtual_environment_vm" "ctrl_plane" {
 
   disk {
     datastore_id = "local-zfs"
-    import_from  = proxmox_virtual_environment_download_file.talos_image.id
+    file_id      = proxmox_download_file.talos_image.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -40,7 +40,7 @@ resource "proxmox_virtual_environment_vm" "ctrl_plane" {
 
     ip_config {
       ipv4 {
-        address = each.value.ip_address
+        address = each.key
         gateway = var.vm_gateway
       }
     }
@@ -52,14 +52,14 @@ resource "proxmox_virtual_environment_vm" "ctrl_plane" {
 }
 
 resource "proxmox_virtual_environment_vm" "wkr" {
-  for_each = { for node in var.worker_node_config : node.name => node }
+  for_each = var.node_data.workers
 
-  name      = each.value.name
-  node_name = "pve"
+  name      = format("%s-kubernetes-worker-node-%s", var.cluster_name, index(keys(var.node_data.workers), each.key))
+  node_name = var.proxmox_target_node
 
   machine     = "q35"
   bios        = "ovmf"
-  description = "Kubernetes server"
+  description = "Talos wkr node"
 
   agent {
     enabled = true
@@ -80,7 +80,7 @@ resource "proxmox_virtual_environment_vm" "wkr" {
 
   disk {
     datastore_id = "local-zfs"
-    import_from  = proxmox_virtual_environment_download_file.talos_image.id
+    file_id      = proxmox_download_file.talos_image.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
@@ -92,7 +92,7 @@ resource "proxmox_virtual_environment_vm" "wkr" {
 
     ip_config {
       ipv4 {
-        address = each.value.ip_address
+        address = each.key
         gateway = var.vm_gateway
       }
     }

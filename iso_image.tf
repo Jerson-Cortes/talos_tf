@@ -1,7 +1,8 @@
-resource "proxmox_storage_iso" "talos_image" {
-  content_type = "import"
-  storage      = "local"
-  pve_node     = var.proxmox_target_node
-  url          = var.talos_linux_iso_image_url
-  filename     = var.talos_linux_iso_image_filename
+resource "proxmox_download_file" "talos_image" {
+  content_type            = "iso"
+  datastore_id            = "local"
+  node_name               = var.proxmox_target_node
+  url                     = var.talos_linux_iso_image_url
+  file_name               = var.talos_linux_iso_image_filename
+  decompression_algorithm = "zst"
 }
