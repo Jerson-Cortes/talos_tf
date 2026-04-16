@@ -49,6 +49,12 @@ resource "proxmox_virtual_environment_vm" "ctrl_plane" {
   network_device {
     bridge = "vmbr0"
   }
+
+  rng {
+    source = "/dev/urandom"
+    max_bytes = 512
+    period = 200
+  }
 }
 
 resource "proxmox_virtual_environment_vm" "wkr" {
@@ -101,5 +107,11 @@ resource "proxmox_virtual_environment_vm" "wkr" {
 
   network_device {
     bridge = "vmbr0"
+  }
+
+  rng {
+    source = "/dev/urandom"
+    max_bytes = 512
+    period = 200
   }
 }
