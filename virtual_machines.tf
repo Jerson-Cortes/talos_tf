@@ -67,6 +67,7 @@ resource "proxmox_virtual_environment_vm" "wkr" {
 
   cpu {
     cores = 4
+    type = "host"
   }
 
   memory {
