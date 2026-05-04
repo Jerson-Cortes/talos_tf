@@ -7,6 +7,7 @@ resource "proxmox_virtual_environment_vm" "ctrl_plane" {
   machine     = "q35"
   bios        = "ovmf"
   description = "Talos ctrl plane node"
+  tags        = ["talos", "k8s", "ctrlr"]
 
   agent {
     enabled = true
@@ -66,6 +67,7 @@ resource "proxmox_virtual_environment_vm" "wkr" {
   machine     = "q35"
   bios        = "ovmf"
   description = "Talos wkr node"
+  tags        = ["talos", "k8s", "wkr"]
 
   agent {
     enabled = true
