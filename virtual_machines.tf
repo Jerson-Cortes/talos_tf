@@ -41,7 +41,7 @@ resource "proxmox_virtual_environment_vm" "ctrl_plane" {
 
     ip_config {
       ipv4 {
-        address = each.key
+        address = format("%s/24", each.key)
         gateway = var.vm_gateway
       }
     }
@@ -52,9 +52,9 @@ resource "proxmox_virtual_environment_vm" "ctrl_plane" {
   }
 
   rng {
-    source = "/dev/urandom"
+    source    = "/dev/urandom"
     max_bytes = 512
-    period = 200
+    period    = 200
   }
 }
 
@@ -75,7 +75,7 @@ resource "proxmox_virtual_environment_vm" "wkr" {
 
   cpu {
     cores = 4
-    type = "host"
+    type  = "host"
   }
 
   memory {
@@ -101,7 +101,7 @@ resource "proxmox_virtual_environment_vm" "wkr" {
 
     ip_config {
       ipv4 {
-        address = each.key
+        address = format("%s/24", each.key)
         gateway = var.vm_gateway
       }
     }
@@ -112,8 +112,8 @@ resource "proxmox_virtual_environment_vm" "wkr" {
   }
 
   rng {
-    source = "/dev/urandom"
+    source    = "/dev/urandom"
     max_bytes = 512
-    period = 200
+    period    = 200
   }
 }
