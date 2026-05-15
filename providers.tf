@@ -2,11 +2,11 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.102.0"
+      version = "0.106.0"
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.10.1"
+      version = "0.11.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -25,3 +25,5 @@ provider "proxmox" {
     username = var.virtual_environment_user # required when using api_token
   }
 }
+
+provider "talos" {}

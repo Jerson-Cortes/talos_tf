@@ -1,5 +1,7 @@
 # Proxmox variables
 
+#VMs Vars
+
 variable "virtual_environment_endpoint" {
   type        = string
   sensitive   = true
@@ -43,6 +45,11 @@ variable "cluster_name" {
 variable "vm_gateway" {
   type        = string
   description = "The VM gateway"
+}
+
+variable "cluster_endpoint" {
+  description = "The endpoint for the Talos cluster"
+  type        = string
 }
 
 variable "node_data" {
